@@ -1,0 +1,66 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Product {
+  id: Int!
+  title: String!
+  description: String!
+  price: Float!
+  categoryId: Int!
+}
+
+type Category {
+  id: Int!
+  name: String!
+  products: [Product!]!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  cart: [Product!]!
+}
+
+input NewProduct {
+  title: String!
+  description: String!
+  price: Float!
+  categoryId: Int!
+}
+
+type Inventory {
+  products: [Product!]!
+  count: Int!
+}
+
+input NewCategory {
+  name: String!
+}
+
+input ProductOrderByInput {
+  description: Sort = DESC
+  title: Sort = DESC
+  createdAt: Sort = DESC
+}
+
+
+enum Sort {
+  ASC
+  DESC
+}
+
+type Query {
+  category(id: Int!): Category
+  product(id: Int!): Product
+  inventory(filter: String = "", skip: Int = 0, take: Int = 5, orderBy: ProductOrderByInput): Inventory
+  categories: [Category!]!
+  cart(ids: [Int!]!): [Product!]!
+}
+
+type Mutation {
+  createProduct(input: NewProduct!): Product!
+  createCategory(input: NewCategory!): Category!
+}
